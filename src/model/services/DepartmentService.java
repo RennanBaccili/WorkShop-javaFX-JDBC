@@ -14,4 +14,13 @@ public class DepartmentService {
 	public List<Department> findAll(){
 		return dao.findAll();
 	}
+	//ele verifica se o dep existe ou não para ser criado ou atualizado
+	public void saveOrUpdate(Department obj) {
+		if(obj.getId()==null) {
+			dao.insert(obj);
+		}
+		else {
+			dao.update(obj);
+		}
+	}
 }

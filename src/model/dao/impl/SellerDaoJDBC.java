@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import db.DB;
-import db.DbExcepetion;
+import db.DbException;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -51,10 +51,10 @@ public class SellerDaoJDBC implements SellerDao {
 				DB.closeResultSet(rs);
 			}
 			else {
-				throw new DbExcepetion("Erro! No rows Affected!");
+				throw new DbException("Erro! No rows Affected!");
 			}
 		}catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -80,7 +80,7 @@ public class SellerDaoJDBC implements SellerDao {
 		
 			st.executeUpdate();
 		}catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -97,10 +97,10 @@ public class SellerDaoJDBC implements SellerDao {
 			int rows = st.executeUpdate();
 			// caso escolha uma linha que não existe
 			if (rows == 0) {
-				throw new DbExcepetion("Linha escolhida não existe");
+				throw new DbException("Linha escolhida não existe");
 			}
 		}catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -126,7 +126,7 @@ public class SellerDaoJDBC implements SellerDao {
 			}
 			return null;
 		} catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}finally{
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
@@ -183,7 +183,7 @@ public class SellerDaoJDBC implements SellerDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}finally{
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
@@ -226,7 +226,7 @@ public class SellerDaoJDBC implements SellerDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}finally{
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);

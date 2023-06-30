@@ -8,5 +8,14 @@ public class Utils { // para acessar o stage que o controler está, se clicar no
 	public static Stage currentStage(ActionEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
+	//conversor da textField
+	public static Integer tryParserToInt(String str) {
+		try {
+		return Integer.parseInt(str);
+		}
+		catch (NumberFormatException e) {
+			return null;
+		}
+	}
 }
 

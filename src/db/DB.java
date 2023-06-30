@@ -20,7 +20,7 @@ public class DB { // CLASSE PARA CONNECTAR E DESCONECTAR COM O BANCO DE DADOS
 			String url = props.getProperty("dburl");// propriedades
 			conn = DriverManager.getConnection(url, props); //instanciamos a conexão no objeto conn
 			} catch (SQLException e) {
-				throw new DbExcepetion(e.getMessage());
+				throw new DbException(e.getMessage());
 			}
 		}
 		return conn;
@@ -31,7 +31,7 @@ public class DB { // CLASSE PARA CONNECTAR E DESCONECTAR COM O BANCO DE DADOS
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				throw new DbExcepetion(e.getMessage());
+				throw new DbException(e.getMessage());
 			}
 			
 		}
@@ -43,7 +43,7 @@ public class DB { // CLASSE PARA CONNECTAR E DESCONECTAR COM O BANCO DE DADOS
 			props.load(fs);
 			return props;
 		} catch (IOException e) {
-			throw new DbExcepetion(e.getMessage());
+			throw new DbException(e.getMessage());
 		}
 	}
 	public static void closeStatement(Statement st) {
@@ -51,7 +51,7 @@ public class DB { // CLASSE PARA CONNECTAR E DESCONECTAR COM O BANCO DE DADOS
 			try {
 				st.close();
 			} catch (SQLException e) {
-				throw new DbExcepetion(e.getMessage());
+				throw new DbException(e.getMessage());
 			}
 		}
 	}
@@ -60,7 +60,7 @@ public class DB { // CLASSE PARA CONNECTAR E DESCONECTAR COM O BANCO DE DADOS
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				throw new DbExcepetion(e.getMessage());
+				throw new DbException(e.getMessage());
 			}
 		}
 	}
