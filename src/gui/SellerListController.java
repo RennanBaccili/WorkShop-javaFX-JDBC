@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
@@ -45,20 +46,20 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	@FXML
 	private TableColumn<Seller, String> tableColumnName;
-	
+
 	@FXML
 	private TableColumn<Seller, String> tableColumnEmail;
-	
+
 	@FXML
 	private TableColumn<Seller, Date> tableColumnBirthDate;
 
 	@FXML
 	private TableColumn<Seller, Double> tableColumnBaseSalary;
-	
+
 	// coluna do update
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnEDIT;
-	
+
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnREMOVE;
 
@@ -123,7 +124,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 			SellerFormController controller = loader.getController();
 			controller.setSeller(obj);
-			controller.setSellerService(new SellerService());
+			controller.setServices(new SellerService(), new DepartmentService());
+			controller.loadAssociatedObjects(); // combbox
 			controller.subscribeDataChangeListenner(this);// to escrevendo o evento na lista para disparar o evento
 			controller.updateFormData();
 
@@ -135,6 +137,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Erro loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
@@ -143,33 +146,33 @@ public class SellerListController implements Initializable, DataChangeListener {
 	public void onDataChanged() { // quando a notify chegar ativamos a função updateTanbleview
 		updateTableView();
 	}
-	
-	//implementação basica do botão de update 
+
+	// implementação basica do botão de update
 	private void initEditButtons() {
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tableColumnEDIT.setCellFactory(param -> new TableCell<Seller, Seller>() {
 			private final Button button = new Button("edit");
-			
-		@Override
-		protected void updateItem(Seller obj, boolean empty) {
-			super.updateItem(obj, empty);
-			if (obj == null) {
-				setGraphic(null);
-				return;
+
+			@Override
+			protected void updateItem(Seller obj, boolean empty) {
+				super.updateItem(obj, empty);
+				if (obj == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(event -> createDialogForm(obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
 			}
-			setGraphic(button);
-			button.setOnAction(
-					event -> createDialogForm(obj, "/gui/SellerForm.fxml",Utils.currentStage(event)));}
 		});
 	}
 
-	//botão de remove
+	// botão de remove
 	private void initRemoveButtons() {
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<Seller, Seller>() {
-			
+
 			private final Button button = new Button("remove");
-			
+
 			@Override
 			protected void updateItem(Seller obj, boolean empty) {
 				super.updateItem(obj, empty);
@@ -179,15 +182,16 @@ public class SellerListController implements Initializable, DataChangeListener {
 				}
 				setGraphic(button);
 				button.setOnAction(event -> removeEntity(obj));
-				}
+			}
 		});
 	}
-	//OPERAÇÃO PARA REMOVER ENTIDADE
+
+	// OPERAÇÃO PARA REMOVER ENTIDADE
 	private void removeEntity(Seller obj) {
 		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are yiyr syre ti delete?");
-		
-		if(result.get() == ButtonType.OK) {
-			if(service == null) {
+
+		if (result.get() == ButtonType.OK) {
+			if (service == null) {
 				throw new IllegalStateException("Service was null");
 			}
 			try {
@@ -198,5 +202,5 @@ public class SellerListController implements Initializable, DataChangeListener {
 			}
 		}
 	}
-}
 
+}
